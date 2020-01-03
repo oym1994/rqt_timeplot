@@ -28,7 +28,7 @@ namespace rqt_Ui
 *****************************************************************************/
 
 std::string IMU_TOPIC = "/camera/imu";
-std::string IMAGE0_TOPIC = "/camera/color/image_raw";  //"/d400/color/image_raw";
+std::string IMAGE0_TOPIC = "/d400/color/image_raw";// "/camera/color/image_raw";  //
 std::string ACC_TOPIC = "/d400/accel/sample";
 std::string GYRO_TOPIC = "/d400/gyro/sample";
 std::string ODOM_TOPIC = "/odom";
@@ -60,10 +60,10 @@ bool QNode::init()
     ros::NodeHandle n;
     // Add your ros communications here.
 
-     sub_imu = n.subscribe(IMU_TOPIC, 2000, &QNode::imu_callback, this);
+//     sub_imu = n.subscribe(IMU_TOPIC, 2000, &QNode::imu_callback, this);
      sub_img = n.subscribe(IMAGE0_TOPIC, 100, &QNode::img_callback,this);
 //     sub_acc = n.subscribe(ACC_TOPIC, 2000, &QNode::acc_callback, this);
-//     sub_gyro = n.subscribe(GYRO_TOPIC, 2000, &QNode::gyro_callback, this);
+     sub_gyro = n.subscribe(GYRO_TOPIC, 2000, &QNode::gyro_callback, this);
 //     odom = n.subscribe(ODOM_TOPIC, 2000, &QNode::odom_callback, this);
 
      start();

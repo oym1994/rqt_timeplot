@@ -47,8 +47,8 @@ connect(timer, SIGNAL(timeout()),this, SLOT(refresh()));
 connect(&qnode, SIGNAL(get_camtime_buf(QVector<double>)), this, SLOT(get_camtime_buf(QVector<double>)),Qt::DirectConnection);
 //connect(&qnode, SIGNAL(get_acceltime_buf(QVector<double>)), this, SLOT(get_acceltime_buf(QVector<double>)),Qt::DirectConnection);
 //connect(&qnode, SIGNAL(get_odomtime_buf(QVector<double>)), this, SLOT(get_odomtime_buf(QVector<double>)),Qt::DirectConnection);
-//connect(&qnode, SIGNAL(get_gyrotime_buf(QVector<double>)), this, SLOT(get_gyrotime_buf(QVector<double>)),Qt::DirectConnection);
-connect(&qnode, SIGNAL(get_imutime_buf(QVector<double>)), this, SLOT(get_imutime_buf(QVector<double>)),Qt::DirectConnection);
+connect(&qnode, SIGNAL(get_gyrotime_buf(QVector<double>)), this, SLOT(get_gyrotime_buf(QVector<double>)),Qt::DirectConnection);
+//connect(&qnode, SIGNAL(get_imutime_buf(QVector<double>)), this, SLOT(get_imutime_buf(QVector<double>)),Qt::DirectConnection);
 
 
 //connect(&qnode, SIGNAL(get_imutime(double)), this, SLOT(get_imutime(double)));
@@ -58,8 +58,6 @@ connect(&qnode, SIGNAL(get_imutime_buf(QVector<double>)), this, SLOT(get_imutime
 //connect(&qnode, SIGNAL(get_gyrotime(double)), this, SLOT(get_gyrotime(double)));
 
 //connect(&qnode, SIGNAL(get_acceltime(double)), this, SLOT(get_acceltime(double)));
-
-
 
 }
 

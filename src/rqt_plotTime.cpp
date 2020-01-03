@@ -1,4 +1,5 @@
-#include "widget.h"
+
+
 #include <QApplication>
 #include <unistd.h>
 #include <ros/ros.h>
@@ -10,6 +11,7 @@
 #include <nav_msgs/Odometry.h>
 #include <nodelet/nodelet.h>
 #include <QMetaType>
+#include "widget.h"
 
 //char *str;
 //char **argv = &str;
@@ -72,7 +74,7 @@
 
 int main(int argc, char *argv[])
 {
-    ros::init(argc, argv, "rqt_plotTime");  //ros初始化,从命令行传入参数,vins_estimator是节点名
+    ros::init(argc, argv, "rqt_plotTime");  //ros初始化
     QApplication a(argc,argv);
     Widget w(argc,argv);
     w.show();

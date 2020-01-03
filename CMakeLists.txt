@@ -23,22 +23,41 @@ find_package(catkin REQUIRED COMPONENTS
   nav_msgs
   roscpp
   std_msgs
+  cv_bridge
 )
 
-set(CMAKE_PREFIX_PATH /home/oym/Qt5.7.0/5.7/gcc_64/lib/cmake/Qt5)
-SET(Qt5_DIR /home/oym/Qt5.7.0/5.7/gcc_64/include )
-SET(Qt5_LIBRARY  /home/oym/Qt5.7.0/5.7/gcc_64/lib)
+set(CMAKE_PREFIX_PATH /home/QT/5.7/gcc_64/lib/cmake/Qt5)
+SET(Qt5_INCLUDE_DIRS /home/QT/5.7/gcc_64/include )
+SET(Qt5_LIBRARIES  /home/QT/5.7/gcc_64/lib)
 find_package(Qt5 COMPONENTS Core Gui Qml Quick REQUIRED)
 
-set(CMAKE_PREFIX_PATH /home/oym/Qt5.7.0/5.7/gcc_64/lib/cmake/Qt5)
 find_package(Qt5PrintSupport REQUIRED)
 
-qt5_wrap_cpp( MOC include/rqt_timeplot/qcustomplot.h)
-qt5_wrap_cpp( MOC include/rqt_timeplot/widget.h)
+set(HEARDERS include/rqt_timeplot/qcustomplot.h include/rqt_timeplot/widget.h include/rqt_timeplot/qnode.h include/rqt_timeplot/ui_widget.h)
+
+#set(SRCS src/qcustomplot.cpp src/widget.cpp src/qnode.cpp  )
+
+set(UI include/rqt_timeplot/widget.ui)
+
+qt5_wrap_cpp(HEADERS_MOC ${HEARDERS})
+
+qt5_wrap_ui(UI_UIC ${UI})
+
+qt5_add_resources(RCC ${SRCS})
 
 
-qt5_generate_moc(qcustomplot.cpp src/qcustomplot.moc)
-qt5_generate_moc(widget.cpp src/widget.moc)
+#qt5_wrap_cpp( MOC include/rqt_timeplot/qcustomplot.h)
+#qt5_wrap_cpp( MOC include/rqt_timeplot/widget.h)
+#qt5_wrap_cpp( MOC include/rqt_timeplot/qnode.h)
+#qt5_wrap_cpp( MOC include/rqt_timeplot/ui_widget.h)
+
+
+
+#qt5_generate_moc(qcustomplot.cpp src/qcustomplot.moc)
+#qt5_generate_moc(widget.cpp src/widget.moc)
+#qt5_generate_moc(qnode.cpp src/qnode.moc)
+#qt5_generate_moc(rqt_plotTime.cpp src/rqt_plotTime.moc)
+
 
 #find_package(Qt5Widgets REQUIRED)
 #qt5_wrap_gui(UI widget.ui)
@@ -152,6 +171,10 @@ include_directories(
   include/rqt_timeplot
 )
 
+message("Qt5PrintSupport_INCLUDE_DIRS: ${Qt5PrintSupport_INCLUDE_DIRS}")
+message("Qt5: ${Qt5_INCLUDE_DIRS}")
+message("catkin_INCLUDE_DIRS: ${catkin_INCLUDE_DIRS}")
+
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
 #   src/${PROJECT_NAME}/rqt_timeplot.cpp
@@ -165,77 +188,11 @@ include_directories(
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-add_executable(${PROJECT_NAME}_node src/rqt_plotTime.cpp src/qcustomplot.cpp src/widget.cpp src/qnode.cpp)
-target_link_libraries(${PROJECT_NAME}_node ${catkin_LIBRARIES} ${Qt5PrintSupport_LIBRARIES} ${Qt5_LIBRARIES})
+#add_executable(${PROJECT_NAME}_node src/rqt_plotTime.cpp src/qcustomplot.cpp src/widget.cpp src/qnode.cpp)
+
+add_executable(${PROJECT_NAME}_node  ${HEADERS_MOC} ${UI_UIC}  src/rqt_plotTime.cpp src/qcustomplot.cpp src/widget.cpp src/qnode.cpp  )
+
+target_link_libraries(${PROJECT_NAME}_node ${catkin_LIBRARIES} ${Qt5PrintSupport_LIBRARIES} Qt5::Core Qt5::Gui Qt5::Qml Qt5::Quick)
 
 
 
-## Rename C++ executable without prefix
-## The above recommended prefix causes long target names, the following renames the
-## target back to the shorter version for ease of user use
-## e.g. "rosrun someones_pkg node" instead of "rosrun someones_pkg someones_pkg_node"
-# set_target_properties(${PROJECT_NAME}_node PROPERTIES OUTPUT_NAME node PREFIX "")
-
-## Add cmake target dependencies of the executable
-## same as for the library above
-# add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-
-## Specify libraries to link a library or executable target against
-# target_link_libraries(${PROJECT_NAME}_node
-#   ${catkin_LIBRARIES}
-# )
-
-#############
-## Install ##
-#############
-
-# all install targets should use catkin DESTINATION variables
-# See http://ros.org/doc/api/catkin/html/adv_user_guide/variables.html
-
-## Mark executable scripts (Python etc.) for installation
-## in contrast to setup.py, you can choose the destination
-# install(PROGRAMS
-#   scripts/my_python_script
-#   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-# )
-
-## Mark executables for installation
-## See http://docs.ros.org/melodic/api/catkin/html/howto/format1/building_executables.html
-# install(TARGETS ${PROJECT_NAME}_node
-#   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-# )
-
-## Mark libraries for installation
-## See http://docs.ros.org/melodic/api/catkin/html/howto/format1/building_libraries.html
-# install(TARGETS ${PROJECT_NAME}
-#   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-#   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-#   RUNTIME DESTINATION ${CATKIN_GLOBAL_BIN_DESTINATION}
-# )
-
-## Mark cpp header files for installation
-# install(DIRECTORY include/${PROJECT_NAME}/
-#   DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
-#   FILES_MATCHING PATTERN "*.h"
-#   PATTERN ".svn" EXCLUDE
-# )
-
-## Mark other files for installation (e.g. launch and bag files, etc.)
-# install(FILES
-#   # myfile1
-#   # myfile2
-#   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
-# )
-
-#############
-## Testing ##
-#############
-
-## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_rqt_timeplot.cpp)
-# if(TARGET ${PROJECT_NAME}-test)
-#   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
-# endif()
-
-## Add folders to be run by python nosetests
-# catkin_add_nosetests(test)
